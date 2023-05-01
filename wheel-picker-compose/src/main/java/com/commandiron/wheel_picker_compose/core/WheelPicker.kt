@@ -1,6 +1,8 @@
 package com.commandiron.wheel_picker_compose.core
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.snapper.SnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
+import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
@@ -106,6 +109,7 @@ fun WheelPicker(
                 } else {
                     0f
                 }
+                val coroutineScope = rememberCoroutineScope()
                 Box(
                     modifier = Modifier
                         .height(size.height / rowCount)
@@ -117,6 +121,15 @@ fun WheelPicker(
                                 index = index,
                                 rowCount = rowCount
                             )
+                        )
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {
+                                coroutineScope.launch {
+                                    lazyListState.animateScrollToItem(index)
+                                }
+                            }
                         )
                         .graphicsLayer {
                             if (enableRotationX) {
