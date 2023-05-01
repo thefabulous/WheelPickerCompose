@@ -27,6 +27,7 @@ fun WheelDateTimePicker(
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     textColor: Color = LocalContentColor.current,
     selectorProperties: SelectorProperties = WheelPickerDefaults.selectorProperties(),
+    enableRotationX: Boolean = true,
     onSnappedDateTime : (snappedDateTime: LocalDateTime) -> Unit = {}
 ) {
     DefaultWheelDateTimePicker(
@@ -41,6 +42,7 @@ fun WheelDateTimePicker(
         textStyle,
         textColor,
         selectorProperties,
+        enableRotationX = enableRotationX,
         onSnappedDateTime = { snappedDateTime ->
             onSnappedDateTime(snappedDateTime.snappedLocalDateTime)
             snappedDateTime.snappedIndex

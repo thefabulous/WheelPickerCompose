@@ -29,6 +29,7 @@ internal fun DefaultWheelDateTimePicker(
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     textColor: Color = LocalContentColor.current,
     selectorProperties: SelectorProperties = WheelPickerDefaults.selectorProperties(),
+    enableRotationX: Boolean = true,
     onSnappedDateTime : (snappedDateTime: SnappedDateTime) -> Int? = { _ -> null }
 ) {
 
@@ -61,6 +62,7 @@ internal fun DefaultWheelDateTimePicker(
                 selectorProperties = WheelPickerDefaults.selectorProperties(
                     enabled = false
                 ),
+                enableRotationX = enableRotationX,
                 onSnappedDate = { snappedDate ->
 
                     val newDateTime = when(snappedDate) {
@@ -109,6 +111,7 @@ internal fun DefaultWheelDateTimePicker(
                 selectorProperties = WheelPickerDefaults.selectorProperties(
                     enabled = false
                 ),
+                enableRotationX = enableRotationX,
                 onSnappedTime = { snappedTime, timeFormat ->
 
                     val newDateTime = when(snappedTime) {
@@ -140,15 +143,3 @@ internal fun DefaultWheelDateTimePicker(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

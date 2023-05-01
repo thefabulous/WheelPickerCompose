@@ -26,6 +26,7 @@ fun WheelTimePicker(
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     textColor: Color = LocalContentColor.current,
     selectorProperties: SelectorProperties = WheelPickerDefaults.selectorProperties(),
+    enableRotationX: Boolean = true,
     onSnappedTime : (snappedTime: LocalTime) -> Unit = {},
 ) {
     DefaultWheelTimePicker(
@@ -39,6 +40,7 @@ fun WheelTimePicker(
         textStyle,
         textColor,
         selectorProperties,
+        enableRotationX = enableRotationX,
         onSnappedTime = { snappedTime, _ ->
             onSnappedTime(snappedTime.snappedLocalTime)
             snappedTime.snappedIndex
