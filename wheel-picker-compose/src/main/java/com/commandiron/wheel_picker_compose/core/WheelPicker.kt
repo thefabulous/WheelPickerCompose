@@ -24,7 +24,7 @@ import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import kotlin.math.absoluteValue
 
 @Composable
-internal fun WheelPicker(
+fun WheelPicker(
     modifier: Modifier = Modifier,
     startIndex: Int = 0,
     count: Int,
@@ -34,6 +34,31 @@ internal fun WheelPicker(
     enableRotationX: Boolean = true,
     onScrollFinished: (snappedIndex: Int) -> Int? = { null },
     content: @Composable LazyItemScope.(index: Int) -> Unit,
+) {
+    WheelPicker(
+        modifier = modifier,
+        startIndex = startIndex,
+        count = count,
+        rowCount = rowCount,
+        size = size,
+        selectorProperties = selectorProperties,
+        enableRotationX = enableRotationX,
+        onScrollFinished = onScrollFinished,
+        content = { index, _ -> content(index) }
+    )
+}
+
+@Composable
+fun WheelPicker(
+    modifier: Modifier = Modifier,
+    startIndex: Int = 0,
+    count: Int,
+    rowCount: Int,
+    size: DpSize = DpSize(128.dp, 128.dp),
+    selectorProperties: SelectorProperties = WheelPickerDefaults.selectorProperties(),
+    enableRotationX: Boolean = true,
+    onScrollFinished: (snappedIndex: Int) -> Int? = { null },
+    content: @Composable LazyItemScope.(index: Int, position: Float) -> Unit,
 ) {
     val lazyListState = rememberLazyListState(startIndex)
     val snapperLayoutInfo = rememberLazyListSnapperLayoutInfo(lazyListState = lazyListState)
@@ -100,7 +125,12 @@ internal fun WheelPicker(
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    content(index)
+                    val distanceToIndexSnap = snapperLayoutInfo.distanceToIndexSnap(index).absoluteValue
+                    val layoutInfo = remember { derivedStateOf { lazyListState.layoutInfo } }.value
+                    val viewPortHeight = layoutInfo.viewportSize.height.toFloat()
+                    val singleViewPortHeight = viewPortHeight / rowCount
+                    val position = distanceToIndexSnap / singleViewPortHeight
+                    content(index, position)
                 }
             }
         }
